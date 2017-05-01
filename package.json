@@ -1,0 +1,31 @@
+{
+  "name": "lambda-cloudformation-resource",
+  "version": "1.0.0",
+  "description": "Helper for Lambda-backed CloudFormation custom resources",
+  "main": "helper.js",
+  "scripts": {
+    "test": "nyc --all ava",
+    "posttest": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dougmoscrop/lambda-cloudformation-resource.git"
+  },
+  "keywords": [
+    "lambda",
+    "cloudformation",
+    "aws"
+  ],
+  "author": "Doug Moscrop <doug.moscrop@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dougmoscrop/lambda-cloudformation-resource/issues"
+  },
+  "homepage": "https://github.com/dougmoscrop/lambda-cloudformation-resource#readme",
+  "devDependencies": {
+    "ava": "^0.19.1",
+    "eslint": "^3.19.0",
+    "nock": "^9.0.13",
+    "nyc": "^10.3.0"
+  }
+}
