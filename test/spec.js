@@ -8,11 +8,12 @@ const helper = require('../helper.js');
 test('calls with success when a handler is sucessful', t => {
   const scope = nock('https://foo.com')
       .put('/success-handler?key=bar', {
-        Status: 'SUCCESS',
         StackId: '123',
         RequestId: '456',
         LogicalResourceId: '789',
-        Data: {}
+        Data: {},
+        Reason: '',
+        Status: 'SUCCESS',
       })
       .reply(200);
 
@@ -41,12 +42,12 @@ test('calls with success when a handler is sucessful', t => {
 test('calls with failed when handler throws', t => {
   const scope = nock('https://foo.com')
       .put('/failed-throw-handler?key=bar', {
-        Status: 'FAILED',
         StackId: '567',
         RequestId: '456',
         LogicalResourceId: '789',
+        Data: {},
         Reason: 'blahblahblah',
-        Data: {}
+        Status: 'FAILED',
       })
       .reply(200);
 
@@ -75,12 +76,12 @@ test('calls with failed when handler throws', t => {
 test('calls with failed when timed out', t => {
   const scope = nock('https://foo.com')
       .put('/failed-timeout?key=bar', {
-        Status: 'FAILED',
         StackId: '555',
         RequestId: '456',
         LogicalResourceId: '789',
+        Data: {},
         Reason: 'Lambda function timed out',
-        Data: {}
+        Status: 'FAILED',
       })
       .reply(200);
 
@@ -109,11 +110,12 @@ test('calls with failed when timed out', t => {
 test('callback with error when response has bad status code', t => {
   const scope = nock('https://foo.com')
       .put('/send-fails?key=bar', {
-        Status: 'SUCCESS',
         StackId: '234',
         RequestId: '456',
         LogicalResourceId: '789',
-        Data: {}
+        Data: {},
+        Reason: '',
+        Status: 'SUCCESS',
       })
       .reply(500);
 
@@ -139,18 +141,19 @@ test('callback with error when response has bad status code', t => {
 test('callback with error when request fails', t => {
   nock('https://foo.com')
       .put('/will-not-match?key=bar', {
-        Status: 'SUCCESS',
         StackId: '234',
         RequestId: '456',
         LogicalResourceId: '789',
-        Data: {}
+        Data: {},
+        Reason: '',
+        Status: 'SUCCESS',
       })
       .reply(200);
 
   return new Promise((resolve) => {
     helper(() => Promise.resolve())({
       StackId: '234',
-      RequestId: '456',
+      RequestId: '456 ',
       LogicalResourceId: '789',
       RequestType: 'Create',
       ResponseURL: 'https://foo.com/asdf?key=bar'

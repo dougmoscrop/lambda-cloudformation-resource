@@ -3,12 +3,11 @@
 const https = require('https');
 const url = require('url');
 
-function send(event, context, params) {
+function send(event, params) {
   const responseBody = Object.assign({
     StackId: event.StackId,
 		RequestId: event.RequestId,
     LogicalResourceId: event.LogicalResourceId,
-    PhysicalResourceId: context.invokedFunctionArn,
     Data: {},
     Reason: ''
   }, params);
@@ -62,7 +61,7 @@ module.exports = function customResourceHelper(fn) {
         Reason: 'Lambda function timed out'
       };
 
-      send(event, context, result)
+      send(event, result)
         .then(() => callback())
         .catch(e => callback(e));
     }, delay);
@@ -94,7 +93,7 @@ module.exports = function customResourceHelper(fn) {
 
         clearTimeout(timeout);
 
-        return send(event, context, result).then(() => callback())
+        return send(event, result).then(() => callback())
       })
       .catch(e => callback(e));
   };
