@@ -11,6 +11,7 @@ test('calls with success when a handler is sucessful', t => {
         StackId: '123',
         RequestId: '456',
         LogicalResourceId: '789',
+        PhysicalResourceId: 'test-arn',
         Data: {},
         Reason: '',
         Status: 'SUCCESS',
@@ -25,7 +26,8 @@ test('calls with success when a handler is sucessful', t => {
       RequestType: 'Delete',
       ResponseURL: 'https://foo.com/success-handler?key=bar'
     }, {
-      getRemainingTimeInMillis: () => 5000
+      getRemainingTimeInMillis: () => 5000,
+      invokedFunctionArn: 'test-arn',
     }, (err) => {
       if (err) {
         reject(err);
@@ -45,6 +47,7 @@ test('calls with failed when handler throws', t => {
         StackId: '567',
         RequestId: '456',
         LogicalResourceId: '789',
+        PhysicalResourceId: 'test-arn',
         Data: {},
         Reason: 'blahblahblah',
         Status: 'FAILED',
@@ -59,7 +62,8 @@ test('calls with failed when handler throws', t => {
       RequestType: 'Create',
       ResponseURL: 'https://foo.com/failed-throw-handler?key=bar'
     }, {
-      getRemainingTimeInMillis: () => 5000
+      getRemainingTimeInMillis: () => 5000,
+      invokedFunctionArn: 'test-arn',
     }, (err) => {
       if (err) {
         reject(err);
@@ -79,6 +83,7 @@ test('calls with failed when timed out', t => {
         StackId: '555',
         RequestId: '456',
         LogicalResourceId: '789',
+        PhysicalResourceId: 'test-arn',
         Data: {},
         Reason: 'Lambda function timed out',
         Status: 'FAILED',
@@ -93,7 +98,8 @@ test('calls with failed when timed out', t => {
       RequestType: 'Create',
       ResponseURL: 'https://foo.com/failed-timeout?key=bar'
     }, {
-      getRemainingTimeInMillis: () => 100
+      getRemainingTimeInMillis: () => 100,
+      invokedFunctionArn: 'test-arn'
     }, (err) => {
       if (err) {
         reject(err);
@@ -113,6 +119,7 @@ test('callback with error when response has bad status code', t => {
         StackId: '234',
         RequestId: '456',
         LogicalResourceId: '789',
+        PhysicalResourceId: 'test-arn',
         Data: {},
         Reason: '',
         Status: 'SUCCESS',
@@ -127,7 +134,8 @@ test('callback with error when response has bad status code', t => {
       RequestType: 'Create',
       ResponseURL: 'https://foo.com/send-fails?key=bar'
     }, {
-      getRemainingTimeInMillis: () => 5000
+      getRemainingTimeInMillis: () => 5000,
+      invokedFunctionArn: 'test-arn',
     }, (err) => {
       resolve(!!err);
     });
@@ -144,6 +152,7 @@ test('callback with error when request fails', t => {
         StackId: '234',
         RequestId: '456',
         LogicalResourceId: '789',
+        PhysicalResourceId: 'test-arn',
         Data: {},
         Reason: '',
         Status: 'SUCCESS',
@@ -158,7 +167,8 @@ test('callback with error when request fails', t => {
       RequestType: 'Create',
       ResponseURL: 'https://foo.com/asdf?key=bar'
     }, {
-      getRemainingTimeInMillis: () => 5000
+      getRemainingTimeInMillis: () => 5000,
+      invokedFunctionArn: 'test-arn',
     }, (err) => {
       resolve(!!err);
     });
